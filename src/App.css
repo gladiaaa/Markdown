@@ -1,0 +1,58 @@
+/* Simplified Retro Skyblog/Vintage Style CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+body {
+  background-color: #f0e68c;
+  color: #000;
+}
+
+.App {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+  background-color: #fff8dc;
+  border: 2px solid #d2691e;
+}
+
+.App-header {
+  text-align: center;
+}
+
+.App-title {
+  font-size: 2rem;
+  color: #8b0000;
+}
+
+.markdown-input {
+  width: 100%;
+  height: 150px;
+  padding: 0.5rem;
+  border: 2px solid #8b4513;
+  background-color: #ffefd5;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.export-button,
+input[type="file"]::-webkit-file-upload-button {
+  background-color: #ffa500;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  font-size: 1rem;
+  color: #8b4513;
+}
