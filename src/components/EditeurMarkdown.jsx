@@ -1,43 +1,67 @@
 import React, { useState } from 'react';
 
 function EditeurMarkdown() {
+  const [titreFichier, setTitreFichier] = useState('mon_fichier');
   const [markdown, setMarkdown] = useState('');
 
-  // Fonction de conversion Markdown -> HTML (basique)
-  const convertirMarkdownEnHTML = (markdown) => {
-    // Convertir les titres
-    markdown = markdown.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
-    markdown = markdown.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
-    markdown = markdown.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
-    markdown = markdown.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-    markdown = markdown.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-    markdown = markdown.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-    // Convertir le texte en gras et en italique
-    markdown = markdown.replace(/\*\*\*(.*)\*\*\*/gim, '<strong><em>$1</em></strong>');
-    markdown = markdown.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
-    markdown = markdown.replace(/\*(.*)\*/gim, '<em>$1</em>');
+  // Fonction pour convertir le texte Markdown en HTML
+  const convertirMarkdownEnHTML = (markdownText) => {
+    let htmlText = markdownText;
+    
+    // Titres Markdown
+    htmlText = htmlText.replace(/^###### (.*$)/gm, '<h6>$1</h6>');
+    htmlText = htmlText.replace(/^##### (.*$)/gm, '<h5>$1</h5>');
+    htmlText = htmlText.replace(/^#### (.*$)/gm, '<h4>$1</h4>');
+    htmlText = htmlText.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+    htmlText = htmlText.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+    htmlText = htmlText.replace(/^# (.*$)/gm, '<h1>$1</h1>');
 
-    // Convertir les listes 
-    markdown = markdown.replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>');
+    // Texte en gras et italique
+    htmlText = htmlText.replace(/\*\*\*(.*?)\*\*\*/gm, '<strong><em>$1</em></strong>');
+    htmlText = htmlText.replace(/\*\*(.*?)\*\*/gm, '<strong>$1</strong>');
+    htmlText = htmlText.replace(/\*(.*?)\*/gm, '<em>$1</em>');
 
-    // Convertir les sauts de ligne en paragraphes
-    markdown = markdown.replace(/\n\n/gim, '<br/><br/>');
-    //blockquote
-    markdown = markdown.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
-    return markdown.trim();
+    // Bloc de code et code en ligne
+    htmlText = htmlText.replace(/```([^`]+)```/gm, '<pre><code>$1</code></pre>');
+    htmlText = htmlText.replace(/`([^`]+)`/gm, '<code>$1</code>');
+
+    // Listes à puces et listes numérotées
+    htmlText = htmlText.replace(/^\* (.*)/gm, '<ul><li>$1</li></ul>');
+    htmlText = htmlText.replace(/^\d+\. (.*)/gm, '<ol><li>$1</li></ol>');
+
+    // Listes de tâches
+    htmlText = htmlText.replace(/- \[ \] (.*)/gm, '<ul><li><input type="checkbox" disabled> $1</li></ul>');
+    htmlText = htmlText.replace(/- \[x\] (.*)/gm, '<ul><li><input type="checkbox" checked disabled> $1</li></ul>');
+
+    // Citations
+    htmlText = htmlText.replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>');
+
+    // Liens et images
+    htmlText = htmlText.replace(/\[([^\]]+)\]\(([^)]+)\)/gm, '<a href="$2" target="_blank">$1</a>');
+
+
+    // Sauts de ligne
+    htmlText = htmlText.replace(/\n/gm, '<br>');
+
+    return htmlText;
   };
 
-  const gererChangementMarkdown = (event) => setMarkdown(event.target.value);
+  // Gestion des modifications du texte et du titre
+  const handleMarkdownChange = (event) => setMarkdown(event.target.value);
+  const handleTitleChange = (event) => setTitreFichier(event.target.value);
 
+  // Fonction pour exporter le fichier 
   const exporterMarkdown = () => {
     const element = document.createElement('a');
     const fichier = new Blob([markdown], { type: 'text/plain' });
     element.href = URL.createObjectURL(fichier);
-    element.download = 'markdown.md';
+    element.download = `${titreFichier || 'mon_fichier'}.md`;
     document.body.appendChild(element);
     element.click();
+    document.body.removeChild(element);
   };
 
+  // Fonction pour importer un fichier .md
   const importerMarkdown = (event) => {
     const fichier = event.target.files[0];
     if (fichier) {
@@ -48,21 +72,36 @@ function EditeurMarkdown() {
   };
 
   return (
-    <div>
+    <div className="editeur-markdown">
+      <h1>Éditeur Markdown</h1>
+      
+      <input
+        type="text"
+        value={titreFichier}
+        onChange={handleTitleChange}
+        placeholder="Titre du fichier"
+        className="titre-input"
+      />
+
       <textarea
         className="markdown-input"
         value={markdown}
-        onChange={gererChangementMarkdown}
+        onChange={handleMarkdownChange}
         placeholder="Écrivez votre contenu en Markdown ici..."
         rows="10"
         cols="50"
       />
+
       <div className="buttons">
         <button className="export-button" onClick={exporterMarkdown}>Exporter le Markdown</button>
-        <input className="button" type="file" onChange={importerMarkdown} />
+        <input type="file" onChange={importerMarkdown} className="import-button" />
       </div>
+
       <h2>Prévisualisation</h2>
-      <div className="preview" dangerouslySetInnerHTML={{ __html: convertirMarkdownEnHTML(markdown) }} />
+      <div
+        className="preview"
+        dangerouslySetInnerHTML={{ __html: convertirMarkdownEnHTML(markdown) }}
+      />
     </div>
   );
 }

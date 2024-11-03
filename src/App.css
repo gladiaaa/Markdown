@@ -1,21 +1,48 @@
+/* app.css */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Police maintenue */
 }
 
 body {
   background-color: #f0e68c;
-  color: #000;
+  color: #333; /* Texte légèrement assombri pour un meilleur contraste */
+}
+
+.contenu {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem; /* Espacement équilibré pour plus d’harmonie */
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.TableauDeBord,
+.EditeurMarkdown {
+  flex: 1;
+  max-width: 100%;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-start;
+  margin-top: 10px;
 }
 
 .App {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 3rem auto;
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: #fff8dc;
   border: 2px solid #d2691e;
+  border-radius: 10px; /* Coins arrondis pour un style convivial */
 }
 
 .App-header {
@@ -23,8 +50,9 @@ body {
 }
 
 .App-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #8b0000;
+  margin-bottom: 1rem;
 }
 
 .markdown-input {
@@ -33,22 +61,24 @@ body {
   padding: 0.5rem;
   border: 2px solid #8b4513;
   background-color: #ffefd5;
-}
-
-.buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1rem;
+  resize: vertical; /* Autorise le redimensionnement vertical */
 }
 
 .export-button,
-input[type="file"]::-webkit-file-upload-button {
+input[type="file"] {
   background-color: #ffa500;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.export-button:hover,
+input[type="file"]:hover {
+  background-color: #ff8c00;
 }
 
 input[type="file"] {
@@ -56,7 +86,89 @@ input[type="file"] {
   color: #8b4513;
 }
 
-/* Style pour les citations (blockquote) */
+.magic-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.bouton-magique,
+.bouton-effacer {
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  margin-top: 20px;
+}
+
+.bouton-magique {
+  background-color: #ff69b4;
+}
+
+.bouton-magique:hover {
+  background-color: #ff85c0;
+  transform: scale(1.05);
+}
+
+.bouton-effacer {
+  background-color: #ff4444;
+  margin-left: 10px;
+}
+
+.bouton-effacer:hover {
+  background-color: #ff6666;
+  transform: scale(1.05);
+}
+
+.memes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.meme-gif {
+  max-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Espacement autour des éléments de prévisualisation */
+.preview h1,
+.preview h2,
+.preview h3,
+.preview h4,
+.preview h5,
+.preview h6,
+.preview p,
+.preview ul,
+.preview blockquote {
+  margin-bottom: 1rem;
+}
+
+dialog {
+  border: none;
+  padding: 1.5rem;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #fff8dc;
+}
+
+/* Style pour les blocs de code et blockquotes */
+pre code {
+  display: block;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 blockquote {
   border-left: 4px solid #8b4513;
   padding-left: 1rem;
@@ -65,9 +177,10 @@ blockquote {
   color: #555;
 }
 
-/* Espacement autour des éléments de prévisualisation */
-.preview h1, .preview h2, .preview h3, .preview h4, .preview h5, .preview h6,
-.preview p, .preview ul, .preview blockquote {
-  margin-bottom: 1rem;
+code {
+  background-color: #f4f4f4;
+  padding: 2px 4px;
+  font-size: 0.9rem;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
 }
-
